@@ -135,7 +135,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'SpinalHDL.tex', 'SpinalHDL Documentation',
-     'penis', 'manual'),
+     'dolu', 'manual'),
 ]
 
 
