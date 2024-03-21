@@ -1247,10 +1247,49 @@
 <section id="modport">
 <h3>modport<a class="headerlink" href="#modport" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">modport</span></code> can be implemented through add annotations above functions, with the function name serving as the modport name.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">case</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">Color</span><span class="p">(</span><span class="n">channelWidth</span><span class="p">:</span><span class="w"> </span><span class="nc">Int</span><span class="p">)</span><span class="w"> </span><span class="k">extends</span><span class="w"> </span><span class="nc">SVIF</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">val</span><span class="w"> </span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="n">g</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">UInt</span><span class="p">(</span><span class="n">channelWidth</span><span class="w"> </span><span class="n">bits</span><span class="p">)</span>
+
+<span class="w">  </span><span class="nd">@modport</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">mst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">     </span><span class="n">out</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="n">g</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">)</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="nd">@modport</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">slv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">     </span><span class="n">in</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="n">g</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">)</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>with <code class="docutils literal notranslate"><span class="pre">IMasterSlave</span></code>：</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">case</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">Color</span><span class="p">(</span><span class="n">channelWidth</span><span class="p">:</span><span class="w"> </span><span class="nc">Int</span><span class="p">)</span><span class="w"> </span><span class="k">extends</span><span class="w"> </span><span class="nc">SVIF</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="nc">IMasterSlave</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">val</span><span class="w"> </span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="n">g</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">UInt</span><span class="p">(</span><span class="n">channelWidth</span><span class="w"> </span><span class="n">bits</span><span class="p">)</span>
+
+<span class="w">  </span><span class="k">override</span><span class="w"> </span><span class="k">def</span><span class="w"> </span><span class="nf">asMaster</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">     </span><span class="n">out</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="n">g</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">)</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="nd">@modport</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">mst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">asMaster</span>
+
+<span class="w">  </span><span class="nd">@modport</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">slv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">asSlave</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </section>
 <section id="parameter">
 <h3>Parameter<a class="headerlink" href="#parameter" title="Permalink to this heading"></a></h3>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">case</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">Color</span><span class="p">(</span><span class="n">channelWidth</span><span class="p">:</span><span class="w"> </span><span class="nc">Int</span><span class="p">)</span><span class="w"> </span><span class="k">extends</span><span class="w"> </span><span class="nc">SVIF</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">val</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">addGeneric</span><span class="p">(</span><span class="s">&quot;WIDTH&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">channelWidth</span><span class="p">)</span><span class="c1">// or addParameter</span>
+<span class="w">  </span><span class="kd">val</span><span class="w"> </span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="n">g</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">UInt</span><span class="p">(</span><span class="n">channelWidth</span><span class="w"> </span><span class="n">bits</span><span class="p">)</span>
+<span class="w">  </span><span class="n">tieGeneric</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="p">)</span><span class="c1">// or tieParameter</span>
+<span class="w">  </span><span class="n">tieGeneric</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="p">)</span>
+<span class="w">  </span><span class="n">tieGeneric</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </section>
 <section id="definition-name">
 <h3>Definition Name<a class="headerlink" href="#definition-name" title="Permalink to this heading"></a></h3>
@@ -1285,7 +1324,7 @@
     <!-- source/_templates/footer.html -->
     
     <div class="doc-footer-current-version"><p>
-    Version: master git~27ff7a81 2024-03-21
+    Version: master git~bcaf7dde 2024-03-21
     </p></div>
     
 
